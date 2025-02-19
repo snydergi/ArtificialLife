@@ -312,25 +312,39 @@ class Scene:
                     self.n_solid_particles += int(ptype == 1)
 
     def build_robot(self, numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength):
-        totalActuators = numVertebrae + (numLegs * numLegSegments) - 1
+        totalActuators = numVertebrae + (numLegs * numLegSegments * 2) - 1
         curX = 0
         absY = legLength * numLegSegments
         curY = absY
         for i in range(numVertebrae):
             self.add_circle(curX, curY, vertebraeRadius, i - 1)
             curX += vertebraeRadius * 2 * 0.9
+        totalVertebraeWidth = curX
         curX = 0
         curY = absY
+        actuator_id = numVertebrae - 1  # Start actuator IDs after vertebrae
         for k in range(numLegs):
+            # Randomly place the leg within the total width of the vertebrae
+            curX = random.uniform(0, totalVertebraeWidth - vertebraeRadius)
             for j in range(numLegSegments):
-                self.add_rect(curX + (vertebraeRadius / 2.0),
-                              curY - legLength, vertebraeRadius, legLength,
-                              k + j + numVertebrae - 1)
-                curY -= legLength
-            curY = absY
-            # curX += (vertebraeRadius * 2 * 0.9) * 2
-            curX += vertebraeRadius * 2 * (random.random() * numVertebrae)
+                # Add first rectangle for the leg segment (width = vertebraeRadius / 2)
+                self.add_rect(curX + (vertebraeRadius / 4.0),  # Offset by half of rectangle width
+                              curY - legLength, vertebraeRadius / 2, legLength,
+                              actuator_id)
+                actuator_id += 1  # Increment actuator ID
+
+                # Add second rectangle for the leg segment (width = vertebraeRadius / 2)
+                self.add_rect(curX + (vertebraeRadius / 4.0) + (vertebraeRadius / 2),  # Offset by half of rectangle width
+                              curY - legLength, vertebraeRadius / 2, legLength,
+                              actuator_id)
+                actuator_id += 1  # Increment actuator ID
+                curY -= legLength  # Move down for the next segment
+            curY = absY  # Reset curY for the next leg
         self.set_n_actuators(totalActuators)
+        print('totalActuators', totalActuators)
+        print('numVertebrae', numVertebrae)
+        print('numLegs', numLegs)
+        print('numLegSegments', numLegSegments)
         return
 
     def set_offset(self, x, y):
@@ -361,7 +375,7 @@ def fish(scene):
 
 def robot(scene):
     scene.set_offset(0.1, 0.03)
-    scene.build_robot(5, 0.02, 3, 2, 0.025)
+    scene.build_robot(4, 0.04, 3, 2, 0.025)
 
 
 gui = ti.GUI("Differentiable MPM", (640, 640), background_color=0xFFFFFF)
