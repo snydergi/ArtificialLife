@@ -325,10 +325,11 @@ class Scene:
             for j in range(numLegSegments):
                 self.add_rect(curX + (vertebraeRadius / 2.0),
                               curY - legLength, vertebraeRadius, legLength,
-                              i + numVertebrae - 1)
+                              k + j + numVertebrae - 1)
                 curY -= legLength
             curY = absY
-            curX += (vertebraeRadius * 2 * 0.9) * 2
+            # curX += (vertebraeRadius * 2 * 0.9) * 2
+            curX += vertebraeRadius * 2 * (random.random() * numVertebrae)
         self.set_n_actuators(totalActuators)
         return
 
@@ -360,7 +361,7 @@ def fish(scene):
 
 def robot(scene):
     scene.set_offset(0.1, 0.03)
-    scene.build_robot(5, 0.02, 3, 2, 0.01)
+    scene.build_robot(5, 0.02, 3, 2, 0.025)
 
 
 gui = ti.GUI("Differentiable MPM", (640, 640), background_color=0xFFFFFF)
