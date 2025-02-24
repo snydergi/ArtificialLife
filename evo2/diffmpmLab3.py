@@ -6,6 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
+losses = []
+
 real = ti.f32
 ti.init(default_fp=real, arch=ti.gpu, flatten_if=True)
 
@@ -400,15 +402,12 @@ def visualize(s, folder):
 
 
 def main(numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength, iters=100):
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument('--iters', type=int, default=100)
-    # options = parser.parse_args()
-
     # initialization
     scene = Scene()
     robot(scene, numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength)
     scene.finalize()
     allocate_fields()
+
     # ten scene objects and get the best one
     # big loop here that does all the stuff under it
     for i in range(n_actuators):
@@ -421,7 +420,6 @@ def main(numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength, iter
         actuator_id[i] = scene.actuator_id[i]
         particle_type[i] = scene.particle_type[i]
 
-    losses = []
     for iter in range(iters):
         with ti.ad.Tape(loss):
             forward()
@@ -451,7 +449,23 @@ def main(numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength, iter
 
 
 if __name__ == '__main__':
-    # main()
-    final_loss = main(numVertebrae=4, vertebraeRadius=0.04, numLegs=3, numLegSegments=2,
-                      legLength=0.025, iters=100)
-    print("Final Loss:", final_loss)
+    parser = argparse.ArgumentParser(description="Run the optimization script.")
+    parser.add_argument('--numVertebrae', type=int, required=True, help='Number of vertebrae')
+    parser.add_argument('--vertebraeRadius', type=float, required=True, help='Radius of vertebrae')
+    parser.add_argument('--numLegs', type=int, required=True, help='Number of legs')
+    parser.add_argument('--numLegSegments', type=int, required=True, help='Number of leg segments')
+    parser.add_argument('--legLength', type=float, required=True, help='Length of leg segments')
+    parser.add_argument('--iters', type=int, default=100, help='Number of iterations')
+    args = parser.parse_args()
+
+    main(
+        numVertebrae=args.numVertebrae,
+        vertebraeRadius=args.vertebraeRadius,
+        numLegs=args.numLegs,
+        numLegSegments=args.numLegSegments,
+        legLength=args.legLength,
+        iters=args.iters
+    )
+
+    # Print the final loss
+    print("Final Loss:", losses[-1])
