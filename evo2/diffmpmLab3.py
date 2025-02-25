@@ -5,11 +5,12 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+import time
 
 losses = []
 
 real = ti.f32
-ti.init(default_fp=real, arch=ti.gpu, flatten_if=True)
+ti.init(default_fp=real, arch=ti.cpu, flatten_if=True)
 
 dim = 2
 n_particles = 8192
@@ -434,7 +435,7 @@ def main(numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength, iter
                 weights[i, j] -= learning_rate * weights.grad[i, j]
             bias[i] -= learning_rate * bias.grad[i]
 
-        if iter % 10 == 0:
+        if iter % 100 == 10:
             # visualize
             forward(1500)
             for s in range(15, 1500, 16):
