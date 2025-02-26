@@ -25,7 +25,6 @@ def evaluate_fitness(params):
         "--numLegs", str(params["numLegs"]),
         "--numLegSegments", str(params["numLegSegments"]),
         "--legLength", str(params["legLength"]),
-        "--iters", str(params["iters"])
     ]
 
     # Run the script
@@ -46,7 +45,7 @@ def evaluate_fitness(params):
 def read_population_from_csv(csv_file):
     """
     Reads the population from a CSV file.
-    Each row in the CSV should contain the parameters and fitness score.
+    Each row in the CSV should contain the parameters and final_loss (fitness).
     """
     population = []
     if os.path.isfile(csv_file):
@@ -60,8 +59,7 @@ def read_population_from_csv(csv_file):
                     "numLegs": int(row["numLegs"]),
                     "numLegSegments": int(row["numLegSegments"]),
                     "legLength": float(row["legLength"]),
-                    "iters": int(row["iters"]),
-                    "final_loss": float(row["final_loss"])  # Fitness is also stored
+                    "final_loss": float(row["final_loss"])  # Fitness is stored as final_loss
                 }
                 population.append(individual)
     return population
@@ -85,10 +83,9 @@ def evolutionary_algorithm(csv_file='results.csv'):
                 "numLegs": random.randint(1, 6),  # Ensure >= 1
                 "numLegSegments": random.randint(1, 5),  # Ensure >= 1
                 "legLength": max(0.01, random.uniform(0.01, 0.05)),  # Ensure > 0
-                "iters": 100,
                 "final_loss": None  # Fitness will be calculated later
             }
-            for _ in range(10)  # Population size
+            for _ in range(populationSize)  # Population size
         ]
 
         # Evaluate fitness for the initial population and write to CSV
@@ -96,7 +93,7 @@ def evolutionary_algorithm(csv_file='results.csv'):
             individual["final_loss"] = evaluate_fitness(individual)
 
     # Evolution loop
-    for generation in range(10):  # Number of generations
+    for generation in range(populationSize):  # Number of generations
         print(f"Generation {generation + 1}")
 
         # Evaluate fitness for each individual (this will write to the CSV)
@@ -105,8 +102,8 @@ def evolutionary_algorithm(csv_file='results.csv'):
                 individual["final_loss"] = evaluate_fitness(individual)
             print(f"Parameters: {individual}, Fitness: {individual['final_loss']}")
 
-        # Sort population by fitness (descending order)
-        population.sort(key=lambda x: x["final_loss"], reverse=True)
+        # Sort population by fitness (ascending order, since lower loss is better)
+        population.sort(key=lambda x: x["final_loss"])
 
         # Select the best 50%
         top_50_percent = population[:len(population) // 2]
@@ -118,13 +115,12 @@ def evolutionary_algorithm(csv_file='results.csv'):
         for individual in top_50_percent:
             # Mutate parameters with constraints
             mutated_individual = {
-                "numVertebrae": max(1, individual["numVertebrae"] + random.randint(-1, 1)),  # Ensure >= 1
-                "vertebraeRadius": max(0.005, individual["vertebraeRadius"] + random.uniform(-0.1, 0.1)),  # Ensure > 0
+                "numVertebrae": max(2, individual["numVertebrae"] + random.randint(-1, 1)),  # Ensure >= 2
+                "vertebraeRadius": max(0.005, individual["vertebraeRadius"] + random.uniform(-0.01, 0.01)),  # Ensure > 0
                 "numLegs": max(1, individual["numLegs"] + random.randint(-1, 1)),  # Ensure >= 1
                 "numLegSegments": max(1, individual["numLegSegments"] + random.randint(-1, 1)),  # Ensure >= 1
-                "legLength": max(0.01, individual["legLength"] + random.uniform(-0.1, 0.1)),  # Ensure > 0
-                "iters": 100,
-                "fitness": None  # Fitness will be calculated in the next generation
+                "legLength": max(0.01, individual["legLength"] + random.uniform(-0.01, 0.01)),  # Ensure > 0
+                "final_loss": None  # Fitness will be calculated in the next generation
             }
             new_population.append(mutated_individual)
 
