@@ -3,7 +3,7 @@ import random
 import csv
 import os
 
-populationSize = 10
+populationSize = 4
 
 
 def evaluate_fitness(params):
@@ -19,7 +19,7 @@ def evaluate_fitness(params):
     # Construct the command to run the script
     command = [
         "/home/gis/Documents/ArtificialLife/difftaichiVenv/bin/python3",
-        "/home/gis/Documents/ArtificialLife/alifegh/evo3/diffmpmLab3.py",
+        "/home/gis/Documents/ArtificialLife/alifegh/evo4/diffmpmLab4.py",
         "--numVertebrae", str(params["numVertebrae"]),
         "--vertebraeRadius", str(params["vertebraeRadius"]),
         "--numLegs", str(params["numLegs"]),
@@ -80,9 +80,9 @@ def evolutionary_algorithm(csv_file='results.csv'):
             {
                 "numVertebrae": random.randint(2, 5),  # Already >= 2
                 "vertebraeRadius": max(0.005, random.uniform(0.005, 0.05)),  # Ensure > 0
-                "numLegs": random.randint(2, 6),  # Ensure >= 2
+                "numLegs": random.randint(1, 6),  # Ensure >= 1
                 "numLegSegments": random.randint(1, 5),  # Ensure >= 1
-                "legLength": max(0.01, random.uniform(0.01, 0.1)),  # Ensure > 0
+                "legLength": max(0.01, random.uniform(0.01, 0.05)),  # Ensure > 0
                 "final_loss": None  # Fitness will be calculated later
             }
             for _ in range(populationSize)  # Population size
