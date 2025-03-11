@@ -452,18 +452,18 @@ def main(numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength, iter
                 weights[i, j] -= learning_rate * weights.grad[i, j]
             bias[i] -= learning_rate * bias.grad[i]
 
-        if iter % 10 == 0:
+        if iter % 99 == 0:
             # visualize
             forward(1500)
             for s in range(15, 1500, 16):
                 visualize(s, 'diffmpm/iter{:03d}/'.format(iter))
 
-    # Plot the losses
-    plt.title("Optimization of Initial Velocity")
-    plt.ylabel("Loss")
-    plt.xlabel("Gradient Descent Iterations")
-    plt.plot(losses)
-    plt.show()
+    # # Plot the losses
+    # plt.title("Optimization of Initial Velocity")
+    # plt.ylabel("Loss")
+    # plt.xlabel("Gradient Descent Iterations")
+    # plt.plot(losses)
+    # plt.show()
 
     # Log the final loss and parameters to a CSV file
     final_loss = losses[-1]
@@ -484,23 +484,23 @@ def main(numVertebrae, vertebraeRadius, numLegs, numLegSegments, legLength, iter
     print("Final Loss:", losses[-1])
 
 
-# if __name__ == '__main__':
-#     parser = argparse.ArgumentParser(description="Run the optimization script.")
-#     parser.add_argument('--numVertebrae', type=int, required=True, help='Number of vertebrae')
-#     parser.add_argument('--vertebraeRadius', type=float, required=True, help='Radius of vertebrae')
-#     parser.add_argument('--numLegs', type=int, required=True, help='Number of legs')
-#     parser.add_argument('--numLegSegments', type=int, required=True, help='Number of leg segments')
-#     parser.add_argument('--legLength', type=float, required=True, help='Length of leg segments')
-#     parser.add_argument('--iters', type=int, default=100, help='Number of iterations')
-#     args = parser.parse_args()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Run the optimization script.")
+    parser.add_argument('--numVertebrae', type=int, required=True, help='Number of vertebrae')
+    parser.add_argument('--vertebraeRadius', type=float, required=True, help='Radius of vertebrae')
+    parser.add_argument('--numLegs', type=int, required=True, help='Number of legs')
+    parser.add_argument('--numLegSegments', type=int, required=True, help='Number of leg segments')
+    parser.add_argument('--legLength', type=float, required=True, help='Length of leg segments')
+    parser.add_argument('--iters', type=int, default=100, help='Number of iterations')
+    args = parser.parse_args()
 
-#     main(
-#         numVertebrae=args.numVertebrae,
-#         vertebraeRadius=args.vertebraeRadius,
-#         numLegs=args.numLegs,
-#         numLegSegments=args.numLegSegments,
-#         legLength=args.legLength,
-#         iters=args.iters
-#     )
+    main(
+        numVertebrae=args.numVertebrae,
+        vertebraeRadius=args.vertebraeRadius,
+        numLegs=args.numLegs,
+        numLegSegments=args.numLegSegments,
+        legLength=args.legLength,
+        iters=args.iters
+    )
 
-main(3, 0.05, 5, 1, 0.1, 100)
+# main(3, 0.05, 5, 1, 0.1, 100)
