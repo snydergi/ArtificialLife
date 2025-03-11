@@ -332,31 +332,33 @@ class Scene:
 
         # Calculate spacing for legs
         if numLegs > 1:
-            leg_spacing = totalVertebraeWidth / (numLegs - 1)  # Evenly distribute legs along the vertebrae, including edges
+            # Evenly distribute legs along the vertebrae, including edges
+            leg_spacing = (totalVertebraeWidth - (vertebraeWidth / 2.0)) / (numLegs - 1)
         else:
             leg_spacing = 0  # Only one leg, place it in the center
 
         # Add legs
         for k in range(numLegs):
-            # Calculate the x-position for the leg (center of the leg)
+            # Calculate the x-position for the leg (left edge of the leg)
             if numLegs > 1:
-                curX = leg_spacing * k - (vertebraeWidth / 4.0)  # Center the leg pair
+                curX = leg_spacing * k  # Align the left edge of the leg with the vertebrae edge
             else:
-                curX = totalVertebraeWidth / 2 - (vertebraeWidth / 4.0)  # Center the single leg
+                curX = (totalVertebraeWidth - (vertebraeWidth / 2.0)) / 2  # Center the single leg
             curY = absY  # Reset curY for each leg
 
             for j in range(numLegSegments):
                 # Add first rectangle for the leg segment (width = vertebraeWidth / 4.0)
                 self.add_rect(curX,  # Start at curX
-                            curY - legLength, vertebraeWidth / 4.0, legLength,
-                            actuator_id)
+                              curY - legLength, vertebraeWidth / 4.0, legLength,
+                              actuator_id)
                 actuator_id += 1  # Increment actuator ID
 
                 # Add second rectangle for the leg segment (width = vertebraeWidth / 4.0)
                 # Place it directly next to the first rectangle
-                self.add_rect(curX + (vertebraeWidth / 4.0),  # Start at the end of the first rectangle
-                            curY - legLength, vertebraeWidth / 4.0, legLength,
-                            actuator_id)
+                # Start at the end of the first rectangle
+                self.add_rect(curX + (vertebraeWidth / 4.0),
+                              curY - legLength, vertebraeWidth / 4.0, legLength,
+                              actuator_id)
                 actuator_id += 1  # Increment actuator ID
                 curY -= legLength  # Move down for the next segment
 

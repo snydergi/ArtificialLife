@@ -80,8 +80,8 @@ def evolutionary_algorithm(csv_file='results.csv'):
             {
                 "numVertebrae": random.randint(2, 5),  # Already >= 2
                 "vertebraeRadius": max(0.005, random.uniform(0.005, 0.05)),  # Ensure > 0
-                "numLegs": random.randint(1, 6),  # Ensure >= 1
-                "numLegSegments": random.randint(1, 5),  # Ensure >= 1
+                "numLegs": random.randint(0, 6),  # Ensure >= 1
+                "numLegSegments": random.randint(1, 4),  # Ensure >= 1
                 "legLength": max(0.01, random.uniform(0.005, 0.02)),  # Ensure > 0
                 "final_loss": None  # Fitness will be calculated later
             }
