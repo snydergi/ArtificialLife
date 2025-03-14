@@ -16,11 +16,26 @@ The second lab had the goal of moving beyond a fixed geometry and introducing va
 
 ![Seed Generated Robot](media/Lab2Robot.gif)
 
-### Lab 3 (diffmpmLab3.py)
+### Lab 3 (evo/evolutionaryAlgorithm.py)
+The goal of lab 3 was to add an optimization loop. I first updated the topology of the robot, making it generate a 'spine' made of circles and then sets of legs made out of rectangles. The evolutionary loop creates a randomly initialized population then trains them. Upon completion, the top 50% are kept and randomly mutated children are created to fill in the remaining 50%. 
 
+### Lab 4 / Final Project (evo4/evolve.py)
+The last step of the project was to finalize generation of the soft body robots and their control.
+The generation of the robots was altered to change the spin from circles to squares, as the legs
+of the robot frequently delaminated from the body when using a spine. Additionally,
+thanks to tuning of maximum mutation values, as well as the range of possible initial values,
+resulted in much fewer failed individuals in the population who would not run due to memory issues
+or other problems within difftaichi.
 
-### Lab 4 (evo4/evolve.py)
+The final demo video is seen here:
 
-To run (from ../ArificialLife folder), make sure venv is active, then:
+<iframe width="560" height="315" src="https://youtu.be/LYrzcan8ZKA" title="Artificial Life Final Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-/difftaichiVenv/bin/python3 "path to file name"
+## Running Program
+To run these programs, difftaichi must be installed in a Python Virtual Environment. Upon attempting to 
+start the program, any additional dependencies will be indicated in error logs. Install the libraries until
+it runs.
+
+To run, make sure venv is active, then:
+
+`/[PATH TO VENV]/bin/python3 [PATH TO SCRIPT]`
