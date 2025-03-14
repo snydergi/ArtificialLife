@@ -29,7 +29,9 @@ or other problems within difftaichi.
 
 The final demo video is seen here:
 
-<iframe width="560" height="315" src="https://youtu.be/LYrzcan8ZKA" title="Artificial Life Final Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+https://youtu.be/LYrzcan8ZKA
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/LYrzcan8ZKA/0.jpg)](https://www.youtube.com/watch?v=LYrzcan8ZKA)
 
 ## Running Program
 To run these programs, difftaichi must be installed in a Python Virtual Environment. Upon attempting to 
