@@ -27,9 +27,7 @@ thanks to tuning of maximum mutation values, as well as the range of possible in
 resulted in much fewer failed individuals in the population who would not run due to memory issues
 or other problems within difftaichi.
 
-The final demo video is seen here:
-
-https://youtu.be/LYrzcan8ZKA
+The final demo video is seen here (Click the image):
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/LYrzcan8ZKA/0.jpg)](https://www.youtube.com/watch?v=LYrzcan8ZKA)
 
